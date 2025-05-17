@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Excelling In Educating Quiz</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #800000; /* solid maroon background */
+      color: #fff;
+    }
+
+    .quiz-container {
+      max-width: 700px;
+      margin: 50px auto;
+      padding: 30px;
+      background-color: #f2f2f2;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.2);
+      color: #000;
+    }
+
+    .quiz-container h2 {
+      text-align: center;
+      color: #004080; /* navy */
+    }
+
+    .btn, #nextBtn {
+      background-color: #004080; /* navy */
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      margin-top: 20px;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: transform 0.3s ease, background-color 0.3s ease;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .btn:hover, #nextBtn:hover {
+      background-color: #002f5c;
+      transform: scale(1.05);
+    }
+
+    #quiz button {
+      background-color: #ddd;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 6px;
+      margin: 8px 0;
+      width: 100%;
+      text-align: left;
+      cursor: pointer;
+      font-size: 15px;
+      transition: background-color 0.2s ease;
+    }
+
+    #quiz button:hover {
+      background-color: #bbb;
+    }
+
+    #result {
+      font-weight: bold;
+      text-align: center;
+      font-size: 18px;
+      color: #004080;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="quiz-container">
+    <h2>Excelling In Educating Quiz</h2>
+    <p>THE QUIZ HAS 5 QUESTIONS. CHOOSE THE RIGHT ONE OR ELSE</p>
+    <button class="btn" id="startBtn" onclick="startQuiz()"><b>Begin Quiz</b></button>
+    <div id="quiz" style="display: none;"></div>
+    <button class="btn" id="nextBtn" onclick="nextQuestion()" style="display: none;"><b>Next</b></button>
+    <p id="result"></p>
+  </div>
+
+  <script>
+    const questions = [
+      {
+        question: "What is the main goal of 'Excelling In Educating'?",
+        answers: [
+          "To give children quality knowledge worldwide",
+          "To sell educational software",
+          "To replace schools with websites",
+          "To provide entertainment"
+        ],
+        correct: 0
+      },
+      {
+        question: "How does the website plan to achieve its mission?",
+        answers: [
+          "By replacing teachers",
+          "By raising awareness step-by-step",
+          "By offering paid courses",
+          "By focusing only on teenagers"
+        ],
+        correct: 1
+      },
+      {
+        question: "Why was this website made?",
+        answers: [
+          "To collect donations only",
+          "To spread awareness about lack of quality education",
+          "To compete with universities",
+          "To sell video lectures"
+        ],
+        correct: 1
+      },
+      {
+        question: "Who is this website aimed to support?",
+        answers: [
+          "University professors",
+          "Government agencies",
+          "Children lacking quality education",
+          "Tech companies"
+        ],
+        correct: 2
+      },
+      {
+        question: "What kind of activities will the education provide?",
+        answers: [
+          "College entrance exams only",
+          "Advanced science research",
+          "Age-appropriate guidance activities",
+          "Just reading exercises"
+        ],
+        correct: 2
+      }
+    ];
+
+    let currentQuestion = 0;
+    let score = 0;
+
+    function startQuiz() {
+      document.getElementById("startBtn").style.display = "none";
+      document.getElementById("quiz").style.display = "block";
+      showQuestion();
+    }
+
+    function showQuestion() {
+      const quizContainer = document.getElementById("quiz");
+      const q = questions[currentQuestion];
+      quizContainer.innerHTML = `
+        <h3>${q.question}</h3>
+        ${q.answers.map((answer, i) =>
+          `<button onclick="selectAnswer(${i})">${answer}</button>`
+        ).join("")}
+      `;
+    }
+
+    function selectAnswer(choice) {
+      const q = questions[currentQuestion];
+      if (choice === q.correct) score++;
+
+      document.getElementById("nextBtn").style.display = "inline-block";
+      const buttons = document.querySelectorAll("#quiz button");
+      buttons.forEach((btn, i) => {
+        btn.disabled = true;
+        btn.style.backgroundColor = i === q.correct ? "green" : (i === choice ? "red" : "#ddd");
+        btn.style.color = "#fff";
+      });
+    }
+
+    function nextQuestion() {
+      currentQuestion++;
+      document.getElementById("nextBtn").style.display = "none";
+
+      if (currentQuestion < questions.length) {
+        showQuestion();
+      } else {
+        document.getElementById("quiz").innerHTML = "";
+        document.getElementById("result").textContent = `You got ${score} out of ${questions.length} correct!`;
+      }
+    }
+  </script>
+
+</body>
+</html>
